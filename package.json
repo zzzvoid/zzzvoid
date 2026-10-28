@@ -1,0 +1,30 @@
+{
+  "name": "zzzvoid",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "ready": "vp check && vp run -r test && vp run -r build",
+    "dev": "vp run website#dev",
+    "build": "vp run -r build",
+    "test": "vp run -r test",
+    "check": "vp check",
+    "preview": "vp run website#preview",
+    "deploy": "vp run website#deploy",
+    "generate-routes": "vp run website#generate-routes"
+  },
+  "devDependencies": {
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.16.1",
+      "onFail": "download"
+    }
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  }
+}
