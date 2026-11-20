@@ -1,14 +1,27 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
+import { ContactSection } from "#/components/contact-section";
+import { Hero } from "#/components/hero";
+import { PrinciplesSection } from "#/components/principles-section";
+import { ServicesSection } from "#/components/services-section";
+import { SiteFooter } from "#/components/site-footer";
+import { SiteHeader } from "#/components/site-header";
+import { WorkSection } from "#/components/work-section";
+import type { ReactNode } from "react";
 
-export const Route = createFileRoute('/')({ component: Home })
+export const Route = createFileRoute("/")({ component: Home });
 
-function Home() {
+function Home(): ReactNode {
   return (
-    <div className="p-8">
-      <h1 className="text-4xl font-bold">Welcome to TanStack Start</h1>
-      <p className="mt-4 text-lg">
-        Edit <code>src/routes/index.tsx</code> to get started.
-      </p>
+    <div id="top">
+      <SiteHeader />
+      <main>
+        <Hero />
+        <WorkSection />
+        <ServicesSection />
+        <PrinciplesSection />
+        <ContactSection />
+      </main>
+      <SiteFooter />
     </div>
-  )
+  );
 }

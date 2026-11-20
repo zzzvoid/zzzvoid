@@ -1,17 +1,234 @@
-
+@import "@fontsource-variable/noto-serif-sc";
 @import "tailwindcss";
 
-* {
-  box-sizing: border-box;
+@theme {
+  --color-paper: #f5f5f7;
+  --color-ink: #1d1d1f;
+  --color-dim: #6e6e73;
+  --color-line: #e5e5ea;
+  --color-accent: #0066cc;
+
+  --font-serif: Georgia, "Noto Serif SC Variable", "Source Han Serif SC", "Songti SC", serif;
+  --font-mono:
+    ui-monospace, "SF Mono", "Cascadia Code", Consolas, Menlo, "Noto Serif SC Variable",
+    "Source Han Serif SC", "Songti SC", serif;
+
+  /* 整站运动共用一条缓动曲线：快出发、缓收尾 */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-html,
-body,
-#app {
-  min-height: 100%;
+@utility glass {
+  background-color: rgb(255 255 255 / 0.72);
+  backdrop-filter: blur(24px) saturate(1.7);
+  -webkit-backdrop-filter: blur(24px) saturate(1.7);
+  border: 1px solid rgb(255 255 255 / 0.8);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.85),
+    0 1px 2px rgb(29 29 31 / 0.04),
+    0 8px 24px rgb(29 29 31 / 0.05);
 }
 
-body {
-  margin: 0;
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #d2d2d7 transparent;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* 液态玻璃需要背后有色彩变化可以折射，两层极低饱和的冷调晕染只为此服务 */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      radial-gradient(52rem 36rem at 10% -10%, rgb(174 186 204 / 0.13), transparent 60%),
+      radial-gradient(44rem 30rem at 92% 8%, rgb(196 194 206 / 0.1), transparent 60%);
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  /* 滚动条也长在玻璃面上：细、圆、中性灰，不再是系统的长条 */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #d2d2d7;
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #aeaeb2;
+  }
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
 }
 
+@layer components {
+  /*
+   * 悬停抬升（小控件用）：位移只在有指针的设备发生；按下时快速落回（80ms），
+   * 离开时缓慢升回（200ms）——按下是系统响应，要干脆。
+   */
+  .hover-lift {
+    transition:
+      transform 200ms var(--ease-out-quart),
+      box-shadow 200ms var(--ease-out-quart);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hover-lift:hover {
+      transform: translateY(-2px);
+    }
+
+    .hover-lift:active {
+      transition-duration: 80ms;
+      transform: translateY(0);
+    }
+  }
+
+  /* 大面积玻璃面的悬停反馈：轻微放大 1% 而非位移，像被轻轻托起 */
+  .hover-scale {
+    transition:
+      transform 200ms var(--ease-out-quart),
+      box-shadow 200ms var(--ease-out-quart);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hover-scale:hover {
+      transform: scale(1.01);
+    }
+
+    .hover-scale:active {
+      transition-duration: 80ms;
+      transform: scale(1);
+    }
+  }
+
+  /* 玻璃按钮的按压反馈：颜色变化保留，位移交给 reduced-motion 处理 */
+  .press {
+    transition:
+      transform 120ms var(--ease-out-quart),
+      background-color 200ms var(--ease-out-quart);
+  }
+
+  .press:active {
+    transform: scale(0.98);
+  }
+
+  /* 卡片标题旁的外链箭头：悬停时朝行进方向轻推 2px */
+  .arrow-nudge {
+    transition:
+      transform 200ms var(--ease-out-quart),
+      color 200ms var(--ease-out-quart);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .group:hover .arrow-nudge {
+      transform: translate(2px, -2px);
+    }
+  }
+}
+
+/* 首屏唯一的一次入场：标题从微糊中落定，正文与按钮随后浮现 */
+@keyframes settle {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@layer components {
+  /* 用长属性而非 animation 简写，避免重置元素上 [animation-delay] 的出场节奏 */
+  .settle {
+    animation-name: settle;
+    animation-duration: 700ms;
+    animation-timing-function: var(--ease-out-quart);
+    animation-fill-mode: both;
+  }
+
+  .rise {
+    animation-name: rise;
+    animation-duration: 600ms;
+    animation-timing-function: var(--ease-out-quart);
+    animation-fill-mode: both;
+  }
+}
+
+/* 减少动效偏好：保留淡入与颜色变化，去掉一切位移与模糊 */
+@media (prefers-reduced-motion: reduce) {
+  .settle,
+  .rise {
+    animation: fade 300ms ease-out both;
+  }
+
+  .hover-lift,
+  .hover-scale,
+  .press,
+  .arrow-nudge {
+    transition-property: box-shadow, background-color, color;
+  }
+
+  .hover-lift:hover,
+  .hover-lift:active,
+  .hover-scale:hover,
+  .hover-scale:active,
+  .press:active,
+  .group:hover .arrow-nudge {
+    transform: none;
+  }
+}
