@@ -4,17 +4,13 @@ import { projects } from "#/data/site";
 import type { Project } from "#/types";
 import type { ReactNode } from "react";
 
-// 悬停阴影保留玻璃的顶缘高光，材质不会在悬停瞬间「换一块玻璃」
-const cardHover =
-  "hover:shadow-[inset_0_1px_0_rgb(255_255_255/0.85),0_2px_4px_rgb(29_29_31/0.04),0_16px_40px_rgb(29_29_31/0.09)]";
-
 function ProjectCard({ project }: { project: Project }): ReactNode {
   const linked = Boolean(project.href);
 
   const content = (
     <>
       <div className="flex items-start justify-between gap-4">
-        <h3 className="text-xl font-medium tracking-tight md:text-2xl">{project.name}</h3>
+        <h3 className="text-xl font-black tracking-tight md:text-2xl">{project.name}</h3>
         {linked ? (
           <span
             aria-hidden="true"
@@ -25,14 +21,21 @@ function ProjectCard({ project }: { project: Project }): ReactNode {
         ) : null}
       </div>
       <p className="mt-3 text-sm leading-loose text-dim md:text-base">{project.description}</p>
-      <p className="mt-auto pt-6 font-mono text-xs tracking-[0.2em] text-dim">
-        {project.tag} · {project.year}
+      <p className="mt-auto flex items-center gap-3 pt-6">
+        {/* 标签是贴在卡上的黄贴纸，年份保持档案里的冷静 */}
+        <span className="inline-block rounded-[5px] bg-accent px-1.5 py-0.5 text-[10px] font-black text-void">
+          {project.tag}
+        </span>
+        <span className="text-xs font-bold tracking-[0.2em] text-dim">{project.year}</span>
       </p>
     </>
   );
 
+  // 卡片是面板上的浅一层圆角面，悬停掉出硬黄影
+  const shell = "h-full rounded-xl bg-white/5 px-6 py-6 md:px-7 md:py-7";
+
   if (!linked) {
-    return <div className="glass flex h-full flex-col rounded-3xl px-7 py-7">{content}</div>;
+    return <div className={shell}>{content}</div>;
   }
 
   return (
@@ -40,7 +43,7 @@ function ProjectCard({ project }: { project: Project }): ReactNode {
       href={project.href}
       target="_blank"
       rel="noreferrer"
-      className={`hover-scale glass group flex h-full flex-col rounded-3xl px-7 py-7 ${cardHover}`}
+      className={`card-hover group block h-full ${shell}`}
     >
       {content}
     </a>
@@ -49,7 +52,7 @@ function ProjectCard({ project }: { project: Project }): ReactNode {
 
 export function WorkSection(): ReactNode {
   return (
-    <Section id="work" title="作品">
+    <Section id="work" title="作品" en="WORK ARCHIVE">
       <p className="max-w-xl text-base leading-loose text-dim">
         挑几个能说的。别的东西还在做，做完再讲。
       </p>

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { ChannelRail } from "#/components/channel-rail";
 import { ContactSection } from "#/components/contact-section";
 import { Hero } from "#/components/hero";
 import { PrinciplesSection } from "#/components/principles-section";
@@ -14,7 +15,8 @@ function Home(): ReactNode {
   return (
     <div id="top">
       <SiteHeader />
-      <main>
+      <ChannelRail />
+      <main className="flex flex-col gap-4 pb-4 md:gap-6 md:pb-6">
         <Hero />
         <WorkSection />
         <ServicesSection />

@@ -4,17 +4,17 @@ interface ArrowProps {
   className?: string;
 }
 
-// 三个指示箭头手绘成同一笔画（12 网格、1.5 描边、圆角端点），
-// 不用 Unicode 字形，避免各平台字体渲染不一。
+// 三个指示箭头手绘成同一笔画（12 网格、2.5 粗描边、方头端点），
+// 硬朗的线条才压得住黑底黄字的界面；不用 Unicode 字形，避免各平台字体渲染不一。
 export function ArrowDown({ className }: ArrowProps): ReactNode {
   return (
     <svg
       viewBox="0 0 12 12"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      strokeWidth="2.5"
+      strokeLinecap="square"
+      strokeLinejoin="miter"
       aria-hidden="true"
       className={className}
     >
@@ -30,9 +30,9 @@ export function ArrowUp({ className }: ArrowProps): ReactNode {
       viewBox="0 0 12 12"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      strokeWidth="2.5"
+      strokeLinecap="square"
+      strokeLinejoin="miter"
       aria-hidden="true"
       className={className}
     >
@@ -48,9 +48,9 @@ export function ArrowUpRight({ className }: ArrowProps): ReactNode {
       viewBox="0 0 12 12"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      strokeWidth="2.5"
+      strokeLinecap="square"
+      strokeLinejoin="miter"
       aria-hidden="true"
       className={className}
     >

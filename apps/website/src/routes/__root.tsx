@@ -6,9 +6,9 @@ import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 
-// 中性白圆角方块上的一点蓝——整站的视觉概念（安静白面上的一点光）都在这一个图形里
+// 空洞黑方块上的两道黄斜杠——整站的视觉概念（黑面 + ZZZ 黄的硬边斜切）都压在这一个图形里
 const favicon =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f5f5f7' stroke='%23e5e5ea' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='10' fill='%230066cc'/%3E%3C/svg%3E";
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230c0c0d'/%3E%3Cpolygon points='14,50 30,14 42,14 26,50' fill='%23ffe600'/%3E%3Cpolygon points='34,50 50,14 58,14 46,50' fill='%23f4f4f5'/%3E%3C/svg%3E";
 
 const pageTitle = `${siteName} — 独立软件工作室`;
 
@@ -31,7 +31,7 @@ export const Route = createRootRoute({
       },
       {
         name: "theme-color",
-        content: "#f5f5f7",
+        content: "#121214",
       },
       {
         property: "og:title",

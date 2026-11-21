@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 
 export function ContactSection(): ReactNode {
   return (
-    <Section id="contact" title="联系">
-      <p className="max-w-2xl text-2xl leading-snug font-semibold text-balance md:text-4xl">
+    <Section id="contact" title="联系" en="SIGNAL">
+      <p className="max-w-2xl text-2xl leading-snug font-black text-balance md:text-4xl">
         有想做的软件？或者只是想聊聊，也行。
       </p>
       <ul className="mt-12 space-y-4 font-mono text-sm">

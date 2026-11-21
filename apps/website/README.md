@@ -25,7 +25,7 @@ pnpm preview    # vp preview
 - `src/routes/` — TanStack Router 文件式路由，新增路由即新增文件，`pnpm generate-routes` 重新生成类型
 - `src/components/` — 页面区块组件
 - `src/data/site.ts` — 站点文案、导航、作品与服务数据
-- `src/styles.css` — 主题 token 与全站样式
+- `src/styles.css` — 主题 token 与全站样式（绝区零风：空洞黑底上悬浮深灰圆角面板，白粗标题 + 黄块 glyph，黄色胶囊 CTA，斜线/菱形底纹，正文为思源黑体）
 
 ## 部署（Cloudflare Workers）
 

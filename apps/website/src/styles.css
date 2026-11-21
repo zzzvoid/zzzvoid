@@ -1,62 +1,80 @@
-@import "@fontsource-variable/noto-serif-sc";
+@import "@fontsource-variable/noto-sans-sc";
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f5f5f7;
-  --color-ink: #1d1d1f;
-  --color-dim: #6e6e73;
-  --color-line: #e5e5ea;
-  --color-accent: #0066cc;
+  /* 绝区零配色：空洞黑打底，面板黑灰分层，白字，ZZZ 黄只做强调 */
+  --color-void: #121214;
+  --color-panel: #1f1f22;
+  --color-ink: #f4f4f5;
+  --color-dim: #b4b4b4;
+  --color-line: #333333;
+  --color-accent: #ffea00;
 
-  --font-serif: Georgia, "Noto Serif SC Variable", "Source Han Serif SC", "Songti SC", serif;
-  --font-mono:
-    ui-monospace, "SF Mono", "Cascadia Code", Consolas, Menlo, "Noto Serif SC Variable",
-    "Source Han Serif SC", "Songti SC", serif;
+  --font-sans: "Noto Sans SC Variable", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Consolas, Menlo, monospace;
 
   /* 整站运动共用一条缓动曲线：快出发、缓收尾 */
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-@utility glass {
-  background-color: rgb(255 255 255 / 0.72);
-  backdrop-filter: blur(24px) saturate(1.7);
-  -webkit-backdrop-filter: blur(24px) saturate(1.7);
-  border: 1px solid rgb(255 255 255 / 0.8);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.85),
-    0 1px 2px rgb(29 29 31 / 0.04),
-    0 8px 24px rgb(29 29 31 / 0.05);
+/* 黄色部件上的菱形网纹：压在黄胶带和高亮块上，让色块带上印刷肌理 */
+@utility tex-rhombus {
+  background-image:
+    linear-gradient(65deg, rgb(0 0 0 / 0.2) 12%, transparent 0 88%, rgb(0 0 0 / 0.2) 0),
+    linear-gradient(65deg, rgb(0 0 0 / 0.2) 12%, transparent 0 88%, rgb(0 0 0 / 0.2) 0),
+    linear-gradient(115deg, rgb(0 0 0 / 0.2) 12%, transparent 0 88%, rgb(0 0 0 / 0.2) 0),
+    linear-gradient(115deg, rgb(0 0 0 / 0.2) 12%, transparent 0 88%, rgb(0 0 0 / 0.2) 0);
+  background-position:
+    0 0,
+    4px 7px;
+  background-size: 8px 14px;
+}
+
+@utility tex-stripes {
+  background-image: repeating-linear-gradient(
+    40deg,
+    transparent 0 5px,
+    rgb(255 255 255 / 0.07) 5px 10px
+  );
+}
+
+/*
+ * 45° 细斜线：官方暗色块上那层「扫描线伪装」的肌理，颜色跟随 currentColor。
+ * 压在深色带上是低调的信号噪纹，压在亮块上则像警戒区的斜纹。
+ */
+@utility tex-hatch {
+  background-image: repeating-linear-gradient(45deg, currentColor 0 1px, transparent 1px 7px);
 }
 
 @layer base {
   html {
-    color-scheme: light;
+    color-scheme: dark;
     scroll-behavior: smooth;
     scrollbar-width: thin;
-    scrollbar-color: #d2d2d7 transparent;
+    scrollbar-color: rgb(255 255 255 / 0.4) transparent;
   }
 
   body {
-    background-color: var(--color-paper);
+    background-color: var(--color-void);
     color: var(--color-ink);
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
 
-  /* 液态玻璃需要背后有色彩变化可以折射，两层极低饱和的冷调晕染只为此服务 */
+  /* 黑面上铺一层极淡的电视噪点：这是「空洞信号」的底质感，绝区零的屏幕意象 */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     z-index: -1;
-    background-image:
-      radial-gradient(52rem 36rem at 10% -10%, rgb(174 186 204 / 0.13), transparent 60%),
-      radial-gradient(44rem 30rem at 92% 8%, rgb(196 194 206 / 0.1), transparent 60%);
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   ::selection {
     background-color: var(--color-accent);
-    color: #ffffff;
+    color: var(--color-void);
   }
 
   :focus-visible {
@@ -64,21 +82,21 @@
     outline-offset: 3px;
   }
 
-  /* 滚动条也长在玻璃面上：细、圆、中性灰，不再是系统的长条 */
+  /* 滚动条做成遥控器拨轮的样子：白色半透明芯 + 一圈更淡的边 */
   ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #d2d2d7;
-    border: 2px solid transparent;
+    background-color: rgb(255 255 255 / 0.4);
+    border: 2px solid rgb(255 255 255 / 0.2);
     border-radius: 999px;
     background-clip: content-box;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: #aeaeb2;
+    background-color: rgb(255 255 255 / 0.55);
   }
 
   ::-webkit-scrollbar-track,
@@ -115,29 +133,36 @@
     }
   }
 
-  /* 大面积玻璃面的悬停反馈：轻微放大 1% 而非位移，像被轻轻托起 */
-  .hover-scale {
+  /*
+   * 卡片悬停：向左上抬起，掉出一块硬边黄色阴影——像贴纸被掀起一角。
+   * 阴影是普通 box-shadow，跟着卡片自己的圆角与黑边走。
+   */
+  .card-hover {
     transition:
       transform 200ms var(--ease-out-quart),
       box-shadow 200ms var(--ease-out-quart);
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .hover-scale:hover {
-      transform: scale(1.01);
+    .card-hover:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0 0 var(--color-accent);
     }
 
-    .hover-scale:active {
+    .card-hover:active {
       transition-duration: 80ms;
-      transform: scale(1);
+      transform: translate(0, 0);
     }
   }
 
-  /* 玻璃按钮的按压反馈：颜色变化保留，位移交给 reduced-motion 处理 */
+  /* 按钮的按压反馈：颜色与描边环的变化保留，位移交给 reduced-motion 处理 */
   .press {
     transition:
       transform 120ms var(--ease-out-quart),
-      background-color 200ms var(--ease-out-quart);
+      background-color 200ms var(--ease-out-quart),
+      border-color 200ms var(--ease-out-quart),
+      color 200ms var(--ease-out-quart),
+      box-shadow 200ms var(--ease-out-quart);
   }
 
   .press:active {
@@ -158,16 +183,14 @@
   }
 }
 
-/* 首屏唯一的一次入场：标题从微糊中落定，正文与按钮随后浮现 */
+/* 首屏唯一的一次入场：标题干脆利落地落定，不再有玻璃时代的模糊 */
 @keyframes settle {
   from {
     opacity: 0;
-    filter: blur(6px);
-    transform: translateY(14px);
+    transform: translateY(18px);
   }
   to {
     opacity: 1;
-    filter: blur(0);
     transform: translateY(0);
   }
 }
@@ -192,11 +215,21 @@
   }
 }
 
+/* 跑马灯：轨道内容渲染两份，位移 -50% 即无缝循环 */
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @layer components {
   /* 用长属性而非 animation 简写，避免重置元素上 [animation-delay] 的出场节奏 */
   .settle {
     animation-name: settle;
-    animation-duration: 700ms;
+    animation-duration: 500ms;
     animation-timing-function: var(--ease-out-quart);
     animation-fill-mode: both;
   }
@@ -207,26 +240,34 @@
     animation-timing-function: var(--ease-out-quart);
     animation-fill-mode: both;
   }
+
+  .ticker-track {
+    animation: ticker 28s linear infinite;
+  }
 }
 
-/* 减少动效偏好：保留淡入与颜色变化，去掉一切位移与模糊 */
+/* 减少动效偏好：保留淡入与颜色变化，去掉一切位移；跑马灯直接停住 */
 @media (prefers-reduced-motion: reduce) {
   .settle,
   .rise {
     animation: fade 300ms ease-out both;
   }
 
+  .ticker-track {
+    animation: none;
+  }
+
   .hover-lift,
-  .hover-scale,
+  .card-hover,
   .press,
   .arrow-nudge {
-    transition-property: box-shadow, background-color, color;
+    transition-property: box-shadow, background-color, border-color, color;
   }
 
   .hover-lift:hover,
   .hover-lift:active,
-  .hover-scale:hover,
-  .hover-scale:active,
+  .card-hover:hover,
+  .card-hover:active,
   .press:active,
   .group:hover .arrow-nudge {
     transform: none;
