@@ -26,7 +26,10 @@ export function Hero(): ReactNode {
         </p>
         <h1 className="settle mt-6 text-4xl leading-[1.15] font-black tracking-tight text-balance [animation-delay:60ms] md:text-6xl">
           用编程帮助他人，
-          <br />也<span className="tex-rhombus rounded-[4px] bg-accent px-2 text-void">创造</span>
+          <br />也
+          <span className="tex-rhombus inline-block rounded-[4px] bg-accent px-2 py-0.5 leading-[1.15] text-void">
+            创造
+          </span>
           一些有意思的东西。
         </h1>
         <p className="rise mt-8 max-w-xl text-base leading-loose text-dim [animation-delay:120ms] md:text-lg">
